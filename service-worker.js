@@ -1,15 +1,26 @@
-const CACHE_NAME = "firstpwa-v3";
+const CACHE_NAME = "firstpwa-v8";
 var urlsToCache = [
   "/",
   "/nav.html",
   "/index.html",
   "/pages/home.html",
   "/pages/about.html",
+  "/pages/howto.html",
   "/pages/contact.html",
   "/css/materialize.min.css",
   "/js/materialize.min.js",
   "/js/nav.js",
-  "/icon.png"
+  "/images/1.jpg",
+  "/images/2.jpg",
+  "/images/3.jpg",
+  "/images/icons/icon-72x72.png",
+  "/images/icons/icon-96x96.png",
+  "/images/icons/icon-128x128.png",
+  "/images/icons/icon-144x144.png",
+  "/images/icons/icon-152x152.png",
+  "/images/icons/icon-192x192.png",
+  "/images/icons/icon-384x384.png",
+  "/images/icons/icon-512x512.png"
 ];
  
 self.addEventListener("install", function(event) {
@@ -26,16 +37,8 @@ self.addEventListener("fetch", function(event) {
         .match(event.request, { cacheName: CACHE_NAME })
         .then(function(response) {
           if (response) {
-            // eslint-disable-next-line no-console
-            console.log("ServiceWorker: Gunakan aset dari cache: ", response.url);
             return response;
           }
-   
-          // eslint-disable-next-line no-console
-          console.log(
-            "ServiceWorker: Memuat aset dari server: ",
-            event.request.url
-          );
           return fetch(event.request);
         })
     );
@@ -47,9 +50,7 @@ self.addEventListener("activate", function(event) {
             return Promise.all(
                 cacheNames.map(function(cacheName) {
                     if (cacheName != CACHE_NAME) {
-                    // eslint-disable-next-line no-console
-                    console.log("ServiceWorker: cache " + cacheName + " dihapus");
-                    return caches.delete(cacheName);
+                      return caches.delete(cacheName);
                     }
                 })
             );
